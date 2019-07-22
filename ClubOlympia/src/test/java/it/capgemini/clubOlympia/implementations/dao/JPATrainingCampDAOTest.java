@@ -89,10 +89,10 @@ public class JPATrainingCampDAOTest {
 		testEntityManager.persist(court);
 		testEntityManager.persist(res);
 		
-		TrainingCamp t1 = new TrainingCamp(0, START_1, END_1, court, coach, COURT_COST, TipoSport.TENNIS);
-		TrainingCamp t2 = new TrainingCamp(0, START_2, END_2, court, coach, COURT_COST, TipoSport.TENNIS);
-		TrainingCamp t3 = new TrainingCamp(0, START_3, END_3, court, coach, COURT_COST, TipoSport.TENNIS);		
-		TrainingCamp t4 = new TrainingCamp(0, START_2, END_2, court, coach, COURT_COST, TipoSport.CALCIO);
+		TrainingCamp t1 = new TrainingCamp(0, START_1, END_1, coach, COURT_COST, TipoSport.TENNIS);
+		TrainingCamp t2 = new TrainingCamp(0, START_2, END_2, coach, COURT_COST, TipoSport.TENNIS);
+		TrainingCamp t3 = new TrainingCamp(0, START_3, END_3, coach, COURT_COST, TipoSport.TENNIS);		
+		TrainingCamp t4 = new TrainingCamp(0, START_2, END_2, coach, COURT_COST, TipoSport.CALCIO);
 
 		testEntityManager.persist(t1);
 		testEntityManager.persist(t2);

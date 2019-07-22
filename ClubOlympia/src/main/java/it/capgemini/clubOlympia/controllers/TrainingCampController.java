@@ -1,5 +1,7 @@
 package it.capgemini.clubOlympia.controllers;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,6 +29,7 @@ import it.capgemini.clubOlympia.abstraction.service.CourtService;
 import it.capgemini.clubOlympia.abstraction.service.TrainingCampService;
 import it.capgemini.clubOlympia.entities.Coach;
 import it.capgemini.clubOlympia.entities.Court;
+import it.capgemini.clubOlympia.entities.TipoSport;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
 import it.capgemini.clubOlympia.entities.dto.TrainingCampDTO;
 import it.capgemini.clubOlympia.exception.BadRequestException;
@@ -46,10 +50,20 @@ public class TrainingCampController {
 	private CoachService coachService;
 	
 	@GetMapping("/training-camp")
-	public Iterable<TrainingCampDTO> all() {
+	public Iterable<TrainingCampDTO> byDateRangeAndSport(@RequestParam(defaultValue = "") String start, 
+			@RequestParam(defaultValue = "") String end, @RequestParam(defaultValue = "") String tipo) {
 		logger.info("calling all reservation method");
-		Iterable<TrainingCamp> all = trainingCourtService.allTrainingCamp();
-		Stream<TrainingCamp> streamRes = StreamSupport.stream(all.spliterator(), false);
+		Iterable<TrainingCamp> camps;
+		if(start.isBlank() || end.isBlank() || tipo.isBlank()) {
+			camps = trainingCourtService.allTrainingCamp();
+		} else {
+			LocalDateTime startTime = LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
+			LocalDateTime endTime = LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);
+			TipoSport tipoSport = TipoSport.valueOf(tipo);
+			
+			camps = trainingCourtService.byTimeRangeAndSport(startTime, endTime, tipoSport);
+		}
+		Stream<TrainingCamp> streamRes = StreamSupport.stream(camps.spliterator(), false);
 		return streamRes.map(r -> TrainingCampDTO.toTrainingCampDto(r)).collect(Collectors.toList());
 	}
 
@@ -73,13 +87,10 @@ public class TrainingCampController {
 		if (coach == null) {
 			return new ResponseEntity<TrainingCampDTO>(HttpStatus.NOT_FOUND);
 		}
-		Court court = courtService.findById(dto.getCourtDto().getId());
-		if (court == null) {
-			return new ResponseEntity<TrainingCampDTO>(HttpStatus.NOT_FOUND);
-		}
+		
 
 		tcamp.setCoach(coach);
-		tcamp.setCourt(court);
+
 
 		trainingCourtService.add(tcamp);
 		TrainingCampDTO result = TrainingCampDTO.toTrainingCampDto(tcamp);
@@ -103,13 +114,9 @@ public class TrainingCampController {
 		if (coach == null) {
 			throw new ResourceNotFoundException("coach not found");
 		}
-		Court court = courtService.findById(dto.getCourtDto().getId());
-		if (court == null) {
-			throw new ResourceNotFoundException("court not found");
-		}
 
 		res.setCoach(coach);
-		res.setCourt(court);
+
 		
 		trainingCourtService.update(res);
 		TrainingCampDTO result = TrainingCampDTO.toTrainingCampDto(res);

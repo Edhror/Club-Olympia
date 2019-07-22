@@ -1,11 +1,14 @@
 package it.capgemini.clubOlympia.implementations.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.capgemini.clubOlympia.abstraction.dao.TrainingCampDAO;
 import it.capgemini.clubOlympia.abstraction.service.TrainingCampService;
+import it.capgemini.clubOlympia.entities.TipoSport;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
 
 @Service
@@ -42,6 +45,12 @@ public class TrainingCourtServiceStandard implements TrainingCampService {
 	@Transactional
 	public TrainingCamp findById(int id) {
 		return trainingCourtDao.findById(id);
+	}
+
+	@Override
+	public Iterable<TrainingCamp> byTimeRangeAndSport(LocalDateTime start, LocalDateTime end, TipoSport tipoSport) {
+		
+		return trainingCourtDao.byTimeRangeAndSport(start, end, tipoSport);
 	}
 
 }

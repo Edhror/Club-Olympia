@@ -31,10 +31,6 @@ public class TrainingCamp {
 	private LocalDateTime end;
 
 	@ManyToOne
-	@JoinColumn(name = "court_id")
-	private Court court;
-
-	@ManyToOne
 	@JoinColumn(name = "coach_id")
 	private Coach coach;
 
@@ -46,18 +42,17 @@ public class TrainingCamp {
 	@Enumerated(EnumType.STRING)
 	private TipoSport tipoSport;
 
-	public TrainingCamp(int id, LocalDateTime start, LocalDateTime end, Court court, Coach coach, double cost,
+	public TrainingCamp(int id, LocalDateTime start, LocalDateTime end, Coach coach, double cost,
 			TipoSport tipoSport) {
-	     this(id, start,end, court, coach, cost, tipoSport, new ArrayList<>());
+	     this(id, start,end, coach, cost, tipoSport, new ArrayList<>());
 	
 	}
 
-	public TrainingCamp(int id, LocalDateTime start, LocalDateTime end, Court court, Coach coach, double cost,
+	public TrainingCamp(int id, LocalDateTime start, LocalDateTime end, Coach coach, double cost,
 			TipoSport tipoSport,List<Reservation> reservations) {
 		this.id = id;
 		this.start = start;
 		this.end = end;
-		this.court = court;
 		this.coach = coach;
 		this.cost = cost;
 		this.tipoSport = tipoSport;
@@ -108,13 +103,6 @@ public class TrainingCamp {
 		this.tipoSport = tipoSport;
 	}
 
-	public Court getCourt() {
-		return court;
-	}
-
-	public void setCourt(Court court) {
-		this.court = court;
-	}
 
 	public double getCost() {
 		return cost;

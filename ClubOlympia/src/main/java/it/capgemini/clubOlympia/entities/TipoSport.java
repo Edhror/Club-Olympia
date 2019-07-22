@@ -1,5 +1,5 @@
 package it.capgemini.clubOlympia.entities;
 
 public enum TipoSport {
-	TENNIS,CALCIO
+	TENNIS,CALCIO, ALL
 }
