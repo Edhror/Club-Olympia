@@ -30,27 +30,29 @@ public class Reservation {
     private Court court;
     
     @ManyToOne
-    @JoinColumn(name="coach_id")
-    private Coach coach;
+    @JoinColumn(name="traningCamp_id", nullable = true)
+    private TrainingCamp trainingCamp;
     
-	public Reservation(int id, LocalDateTime start, LocalDateTime end, Client client, Court court, Coach coach, double cost) {
+
+
+	public Reservation(int id, LocalDateTime start, LocalDateTime end, Client client, Court court, double cost) {
 		this.id = id;
 		this.start = start;
 		this.end = end;
 		this.client = client;
 		this.court = court;
-		this.coach = coach;
 		this.cost = cost;
 	}
 
-	public Coach getCoach() {
-		return coach;
+	
+	public TrainingCamp getTrainingCamp() {
+		return trainingCamp;
 	}
 
-	public void setCoach(Coach coach) {
-		this.coach = coach;
+	public void setTrainingCamp(TrainingCamp trainingCamp) {
+		this.trainingCamp = trainingCamp;
 	}
-
+	
 	public double getCost() {
 		return cost;
 	}

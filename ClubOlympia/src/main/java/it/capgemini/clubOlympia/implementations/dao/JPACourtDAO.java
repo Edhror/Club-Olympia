@@ -12,13 +12,19 @@ import it.capgemini.clubOlympia.entities.Court;
 public class JPACourtDAO implements CourtDAO {
 
 	@Autowired
-	private EntityManager manager;
+	protected EntityManager manager;
 	
 	@Override
 	public Court findById(int id) {
 		Court found = manager.find(Court.class, id);
 		return found;
 
+	}
+
+	@Override
+	public Court save(Court court) {
+		manager.persist(court);
+		return court;
 	}
 
 }

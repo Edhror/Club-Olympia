@@ -4,4 +4,5 @@ import it.capgemini.clubOlympia.entities.Client;
 
 public interface ClientDAO {
    Client findById(int id);
+   Client save(Client client);
 }

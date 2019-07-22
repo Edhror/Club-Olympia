@@ -12,13 +12,19 @@ import it.capgemini.clubOlympia.entities.Client;
 public class JPAClientDAO implements ClientDAO {
 
 	@Autowired
-	private EntityManager manager;
+	protected EntityManager manager;
 
 	@Override 
 	public Client findById(int id) {
 		Client found = manager.find(Client.class, id);
 		return found;
 
+	}
+
+	@Override
+	public Client save(Client client) {
+		manager.persist(client);
+		return client;
 	}
 
 }

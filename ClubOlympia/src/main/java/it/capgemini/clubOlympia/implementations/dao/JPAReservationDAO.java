@@ -16,7 +16,7 @@ public class JPAReservationDAO implements ReservationDAO {
 	public static final String HQL_SELECT_ALL = "from Reservation";
 
 	@Autowired
-	private EntityManager manager;
+	protected EntityManager manager;
 
 	@Override
 	public Iterable<Reservation> allReservations() {
