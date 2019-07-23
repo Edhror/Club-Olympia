@@ -6,11 +6,11 @@ public class ClientForSelectionDTO {
 	
 	
 	private int id;
-	private String clientName;
+	private String name;
 
 	public ClientForSelectionDTO(int id, String clientName) {
 		this.id = id;
-		this.clientName = clientName;
+		this.name = clientName;
 	}
 	
 	public ClientForSelectionDTO() {
@@ -25,12 +25,12 @@ public class ClientForSelectionDTO {
 		this.id = id;
 	}
 
-	public String getClientName() {
-		return clientName;
+	public String getName() {
+		return name;
 	}
 
-	public void setClientName(String clientName) {
-		this.clientName = clientName;
+	public void setName(String clientName) {
+		this.name = clientName;
 	}
 
 

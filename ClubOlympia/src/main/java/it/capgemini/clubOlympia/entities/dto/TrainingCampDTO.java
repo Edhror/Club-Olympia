@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import it.capgemini.clubOlympia.entities.Reservation;
 import it.capgemini.clubOlympia.entities.TipoSport;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
 

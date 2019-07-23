@@ -11,6 +11,8 @@ import it.capgemini.clubOlympia.entities.Coach;
 @Repository
 public class JPACoachDAO implements CoachDAO {
 
+	public static final String ALL_COACHES = "from Coach as c";
+	
 	@Autowired
 	protected EntityManager manager;
 
@@ -24,6 +26,11 @@ public class JPACoachDAO implements CoachDAO {
 	public Coach save(Coach coach) {
 		manager.persist(coach);
 		return coach;
+	}
+
+	@Override
+	public Iterable<Coach> all() {
+		return manager.createQuery(ALL_COACHES, Coach.class).getResultList();
 	}
 
 }

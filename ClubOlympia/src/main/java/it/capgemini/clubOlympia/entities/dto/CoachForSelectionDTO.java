@@ -5,11 +5,11 @@ import it.capgemini.clubOlympia.entities.Coach;
 public class CoachForSelectionDTO {
 
 	private int id;
-	private String coachName;
+	private String name;
 
 	public CoachForSelectionDTO(int id, String coachName) {
 		this.id = id;
-		this.coachName = coachName;
+		this.name = coachName;
 	}
 
 	public CoachForSelectionDTO() {
@@ -24,12 +24,12 @@ public class CoachForSelectionDTO {
 		this.id = id;
 	}
 
-	public String getCoachName() {
-		return coachName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCoachName(String coachName) {
-		this.coachName = coachName;
+	public void setName(String coachName) {
+		this.name = coachName;
 	}
 
 	public static CoachForSelectionDTO toCoachDto(Coach coach) {

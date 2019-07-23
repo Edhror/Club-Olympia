@@ -4,4 +4,5 @@ import it.capgemini.clubOlympia.entities.Coach;
 
 public interface CoachService {
 	   Coach findById(int id);
+	   Iterable<Coach> all();
 }

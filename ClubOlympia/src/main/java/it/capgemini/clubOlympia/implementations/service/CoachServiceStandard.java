@@ -19,6 +19,11 @@ public class CoachServiceStandard implements CoachService{
 	public Coach findById(int id) {
 		return coachDao.findById(id);
 	}
+
+	@Override
+	public Iterable<Coach> all() {
+		return coachDao.all();
+	}
 	
 	
 }

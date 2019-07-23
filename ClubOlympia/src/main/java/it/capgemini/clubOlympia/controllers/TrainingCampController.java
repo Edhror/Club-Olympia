@@ -2,6 +2,7 @@ package it.capgemini.clubOlympia.controllers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -24,13 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import it.capgemini.clubOlympia.abstraction.service.ClientService;
 import it.capgemini.clubOlympia.abstraction.service.CoachService;
 import it.capgemini.clubOlympia.abstraction.service.CourtService;
 import it.capgemini.clubOlympia.abstraction.service.TrainingCampService;
+import it.capgemini.clubOlympia.entities.Client;
 import it.capgemini.clubOlympia.entities.Coach;
-import it.capgemini.clubOlympia.entities.Court;
 import it.capgemini.clubOlympia.entities.TipoSport;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
+import it.capgemini.clubOlympia.entities.dto.ClientForSelectionDTO;
 import it.capgemini.clubOlympia.entities.dto.TrainingCampDTO;
 import it.capgemini.clubOlympia.exception.BadRequestException;
 import it.capgemini.clubOlympia.exception.ResourceNotFoundException;
@@ -48,6 +51,8 @@ public class TrainingCampController {
 	private CourtService courtService;
 	@Autowired
 	private CoachService coachService;
+	@Autowired
+	private ClientService clientService;
 	
 	@GetMapping("/training-camp")
 	public Iterable<TrainingCampDTO> byDateRangeAndSport(@RequestParam(defaultValue = "") String start, 
@@ -59,7 +64,7 @@ public class TrainingCampController {
 		} else {
 			LocalDateTime startTime = LocalDateTime.parse(start, DateTimeFormatter.ISO_DATE_TIME);
 			LocalDateTime endTime = LocalDateTime.parse(end, DateTimeFormatter.ISO_DATE_TIME);
-			TipoSport tipoSport = TipoSport.valueOf(tipo);
+			TipoSport tipoSport = TipoSport.valueOf(tipo.toUpperCase());
 			
 			camps = trainingCourtService.byTimeRangeAndSport(startTime, endTime, tipoSport);
 		}
@@ -77,7 +82,25 @@ public class TrainingCampController {
 		TrainingCampDTO dto = TrainingCampDTO.toTrainingCampDto(found);
 		return dto;
 	}
-
+	
+	@GetMapping("/training-camp/{id}/clients")
+	public ResponseEntity<Iterable<ClientForSelectionDTO>> clientsByNotInTrainingCamp(
+			@PathVariable int id,
+			@RequestParam(name = "status", defaultValue = "enrolled") String status){
+		
+		Iterable<Client> clients;
+		if(status.equals("enrolled")) {
+			clients = clientService.findByTrainingCamp(id);
+		}else {
+			clients = clientService.findByNotInTrainingCamp(id);
+		}
+		Stream<Client> streamClients = StreamSupport.stream(clients.spliterator(), false);
+		List<ClientForSelectionDTO> dtos = streamClients
+				.map(ClientForSelectionDTO::toClientDto)
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(dtos);
+	}
+	
 	@PostMapping("/training-camp")
 	public ResponseEntity<TrainingCampDTO> add(@RequestBody TrainingCampDTO dto,
 			UriComponentsBuilder uriComponentsBuilder) {

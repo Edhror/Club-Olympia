@@ -20,4 +20,21 @@ public class ClientServiceStandard implements ClientService{
 		return clientDao.findById(id);
 	}
 
+	@Override
+	@Transactional
+	public Iterable<Client> findByTrainingCamp(int campId) {
+		return clientDao.findByTrainingCamp(campId);
+	}
+
+	@Override
+	@Transactional
+	public Iterable<Client> all() {
+		return clientDao.all();
+	}
+
+	@Override
+	public Iterable<Client> findByNotInTrainingCamp(int campId) {
+		return clientDao.findByNotInTrainingCamp(campId);
+	}
+
 }

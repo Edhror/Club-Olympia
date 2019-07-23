@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -42,10 +44,19 @@ public class TrainingCamp {
 	@Enumerated(EnumType.STRING)
 	private TipoSport tipoSport;
 
+	
+	@ManyToMany
+	@JoinTable(
+			name="trainingcamp_client",
+			joinColumns=@JoinColumn(name="training_camp_id"),
+			inverseJoinColumns=@JoinColumn(name="client_id")
+			)
+	private List<Client> clients = new ArrayList<>();
+	
+	
 	public TrainingCamp(int id, LocalDateTime start, LocalDateTime end, Coach coach, double cost,
 			TipoSport tipoSport) {
 	     this(id, start,end, coach, cost, tipoSport, new ArrayList<>());
-	
 	}
 
 	public TrainingCamp(int id, LocalDateTime start, LocalDateTime end, Coach coach, double cost,
@@ -114,6 +125,18 @@ public class TrainingCamp {
 
 	public List<Reservation> getReservations() {
 		return reservations;
+	}
+
+	public List<Client> getClients() {
+		return clients;
+	}
+
+	public void setClients(List<Client> clients) {
+		this.clients = clients;
+	}
+
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
 	}
 
 	public void addReservation(Reservation reservation) {

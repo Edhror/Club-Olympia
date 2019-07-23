@@ -48,6 +48,7 @@ public class TrainingCourtServiceStandard implements TrainingCampService {
 	}
 
 	@Override
+	@Transactional
 	public Iterable<TrainingCamp> byTimeRangeAndSport(LocalDateTime start, LocalDateTime end, TipoSport tipoSport) {
 		
 		return trainingCourtDao.byTimeRangeAndSport(start, end, tipoSport);

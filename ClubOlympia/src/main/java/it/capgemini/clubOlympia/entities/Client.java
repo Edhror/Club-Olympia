@@ -1,6 +1,8 @@
 package it.capgemini.clubOlympia.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -19,14 +22,17 @@ public class Client {
 	@Id
 	@SequenceGenerator(name="clientSeq",sequenceName="public.client_id_sequence", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="clientSeq")
-	private int id;
+	protected int id;
 	@Column(name= "firstname")
-	private String name;
-	private String lastname;
+	protected String name;
+	protected String lastname;
 	@Column(name= "date_of_birth")
-	private LocalDate dateOfBirth;
+	protected LocalDate dateOfBirth;
 	@Enumerated(EnumType.STRING)
-	private Sex sex;
+	protected Sex sex;
+	
+	@ManyToMany(mappedBy = "clients")
+	protected List<TrainingCamp> trainingcamps = new ArrayList<>();
 
 	public Client(int id, String name, String lastname, LocalDate dateofbirth, Sex sex) {
 		this.id = id;
