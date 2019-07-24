@@ -12,10 +12,10 @@ import it.capgemini.clubOlympia.entities.TrainingCamp;
 @Repository
 public class JPAClientDAO implements ClientDAO {
 
-	public static final String ALL_CLIENTS = "from Client as c ";
+	public static final String ALL_CLIENTS = "select c from Client as c ";
 	
 	public static final String CLIENTS_NOT_IN_TRAININGCAMPS = ALL_CLIENTS + 
-			"join c.trainingcamps as t where t.id != :id";
+			"left join c.trainingcamps as t where t.id != :id or t.id is null";
 	
 	@Autowired
 	protected EntityManager manager;

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import it.capgemini.clubOlympia.abstraction.dao.TrainingCampDAO;
+import it.capgemini.clubOlympia.entities.Client;
 import it.capgemini.clubOlympia.entities.TipoSport;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
 
@@ -28,20 +29,20 @@ public class JPATrainingCampDAO implements TrainingCampDAO {
 	}
 
 	@Override
-	public TrainingCamp add(TrainingCamp newTrainingCourt) {
-		manager.persist(newTrainingCourt);
-		return newTrainingCourt;
+	public TrainingCamp add(TrainingCamp newTrainingCamp) {
+		manager.persist(newTrainingCamp);
+		return newTrainingCamp;
 	}
 
 	@Override
-	public TrainingCamp update(TrainingCamp newTrainingCourt) {
-		manager.merge(newTrainingCourt);
-		return newTrainingCourt;
+	public TrainingCamp update(TrainingCamp newTrainingCamp) {
+		manager.merge(newTrainingCamp);
+		return newTrainingCamp;
 	}
 
 	@Override
-	public TrainingCamp delete(int idTrainingCourt) {
-		TrainingCamp found = manager.getReference(TrainingCamp.class, idTrainingCourt);
+	public TrainingCamp delete(int idTrainingCamp) {
+		TrainingCamp found = manager.getReference(TrainingCamp.class, idTrainingCamp);
 		manager.remove(found);
 		return found;
 	}
@@ -60,6 +61,16 @@ public class JPATrainingCampDAO implements TrainingCampDAO {
 				.setParameter("tipoSport", tipoSport)
 				.getResultList();
 		return res;
+	}
+
+	@Override
+	public void changeEnrollment(int trainingCampId, Client client, boolean enroll) {
+		TrainingCamp camp = this.findById(trainingCampId);
+		if(enroll) {
+			camp.enroll(client);
+		} else {
+			camp.cancelEnrollment(client);
+		}
 	}
 
 }

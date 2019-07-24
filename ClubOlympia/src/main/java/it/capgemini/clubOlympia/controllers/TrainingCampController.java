@@ -33,6 +33,7 @@ import it.capgemini.clubOlympia.entities.Client;
 import it.capgemini.clubOlympia.entities.Coach;
 import it.capgemini.clubOlympia.entities.TipoSport;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
+import it.capgemini.clubOlympia.entities.dto.ChangeEnrollmentDTO;
 import it.capgemini.clubOlympia.entities.dto.ClientForSelectionDTO;
 import it.capgemini.clubOlympia.entities.dto.TrainingCampDTO;
 import it.capgemini.clubOlympia.exception.BadRequestException;
@@ -101,6 +102,15 @@ public class TrainingCampController {
 		return ResponseEntity.ok(dtos);
 	}
 	
+	@PutMapping("/training-camp/{id}/clients/{clientId}")
+	public ResponseEntity<Void> changeEnrollment(@RequestBody ChangeEnrollmentDTO enrollment) {
+		
+		trainingCourtService.changeEnrollment(enrollment.getTrainingCampId(), 
+				enrollment.getClientId(), 
+				enrollment.getStatus().equals("enroll")? true : false);
+		return ResponseEntity.ok().build();
+	}
+	
 	@PostMapping("/training-camp")
 	public ResponseEntity<TrainingCampDTO> add(@RequestBody TrainingCampDTO dto,
 			UriComponentsBuilder uriComponentsBuilder) {
@@ -133,14 +143,13 @@ public class TrainingCampController {
 		if (found == null) {
 			throw new ResourceNotFoundException("training camp not found");
 		}
+		res.setClients(found.getClients());
+		res.setReservations(found.getReservations());
 		Coach coach = coachService.findById(dto.getCoachDto().getId());
 		if (coach == null) {
 			throw new ResourceNotFoundException("coach not found");
 		}
-
-		res.setCoach(coach);
-
-		
+		res.setCoach(coach);	
 		trainingCourtService.update(res);
 		TrainingCampDTO result = TrainingCampDTO.toTrainingCampDto(res);
 		return new ResponseEntity<TrainingCampDTO>(result, HttpStatus.ACCEPTED);

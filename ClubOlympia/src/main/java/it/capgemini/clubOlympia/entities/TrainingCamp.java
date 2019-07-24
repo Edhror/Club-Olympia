@@ -144,5 +144,40 @@ public class TrainingCamp {
 		reservation.setTrainingCamp(this);
 	}
 	
+	public void enroll(Client client) {
+		List<Client> clients = this.getClients();
+		List<TrainingCamp> camps = client.getTrainingCamps();
+		clients.add(client);
+		camps.add(this);
+	}
+	
+	public void cancelEnrollment(Client client) {
+		List<Client> clients = this.getClients();
+		List<TrainingCamp> camps = client.getTrainingCamps();
+		clients.remove(client);
+		camps.remove(this);
+	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TrainingCamp other = (TrainingCamp) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
 }

@@ -79,17 +79,47 @@ public class Client {
 		this.lastname = lastname;
 	}
 
-	public LocalDate getDateofbirth() {
+	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
 
-	public void setDateofbirth(LocalDate dateofbirth) {
+	public void setDateOfBirth(LocalDate dateofbirth) {
 		this.dateOfBirth = dateofbirth;
 	}
 
 	@Override
 	public String toString() {
 		return "Client [name=" + name + "]";
+	}
+
+	public List<TrainingCamp> getTrainingCamps() {
+		return trainingcamps;
+	}
+
+	public void setTrainingcamps(List<TrainingCamp> trainingcamps) {
+		this.trainingcamps = trainingcamps;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Client other = (Client) obj;
+		if (id != other.id)
+			return false;
+		return true;
 	}
     
 }

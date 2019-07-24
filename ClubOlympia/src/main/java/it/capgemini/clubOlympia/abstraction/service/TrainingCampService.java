@@ -10,8 +10,8 @@ public interface TrainingCampService {
     Iterable<TrainingCamp> allTrainingCamp();
     TrainingCamp add(TrainingCamp newTrainingCamp);
     TrainingCamp update(TrainingCamp newTrainingCamp);
-    TrainingCamp delete (int idTrainingCamp);
+    TrainingCamp delete (int trainingCampId);
     TrainingCamp findById(int id);
     Iterable<TrainingCamp> byTimeRangeAndSport(LocalDateTime start, LocalDateTime end, TipoSport tipoSport);
-
+    void changeEnrollment(int trainingCampId, int clientId, boolean enroll);
 }

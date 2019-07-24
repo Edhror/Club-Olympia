@@ -19,12 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import it.capgemini.clubOlympia.entities.Client;
 import it.capgemini.clubOlympia.entities.Coach;
-import it.capgemini.clubOlympia.entities.Court;
-import it.capgemini.clubOlympia.entities.Reservation;
 import it.capgemini.clubOlympia.entities.Sex;
 import it.capgemini.clubOlympia.entities.Surface;
-import it.capgemini.clubOlympia.entities.TennisCourt;
 import it.capgemini.clubOlympia.entities.TipoSport;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
 
@@ -54,7 +52,10 @@ public class JPATrainingCampDAOTest {
 	
 
 	public final static LocalDateTime START_TEST = LocalDateTime.of(2000, 1, 13, 21, 00); 
-	public final static LocalDateTime END_TEST = LocalDateTime.of(2000, 3, 22, 21, 00); 
+	public final static LocalDateTime END_TEST = LocalDateTime.of(2000, 3, 22, 21, 00);
+	
+	private TrainingCamp t1, t2, t3, t4;
+	private Coach coach;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -66,6 +67,22 @@ public class JPATrainingCampDAOTest {
 
 	@Before
 	public void setUp() throws Exception {
+		
+		coach = new Coach(0, CLIENT_FIRSTNAME, CLIENT_LASTNAME, CLIENT_DATEOFBIRTH, SEX,CLIENT_BIO);
+		
+		testEntityManager.persist(coach);
+		
+		t1 = new TrainingCamp(0, START_1, END_1, coach, COURT_COST, TipoSport.TENNIS);
+		t2 = new TrainingCamp(0, START_2, END_2, coach, COURT_COST, TipoSport.TENNIS);
+		t3 = new TrainingCamp(0, START_3, END_3, coach, COURT_COST, TipoSport.TENNIS);		
+		t4 = new TrainingCamp(0, START_2, END_2, coach, COURT_COST, TipoSport.CALCIO);
+
+		testEntityManager.persist(t1);
+		testEntityManager.persist(t2);
+		testEntityManager.persist(t3);
+		testEntityManager.persist(t4);
+		testEntityManager.flush();
+		
 	}
 
 	@After
@@ -81,25 +98,6 @@ public class JPATrainingCampDAOTest {
 	@Test
 	public void testByTimeRangeAndSport() {
 		
-		Coach coach = new Coach(0, CLIENT_FIRSTNAME, CLIENT_LASTNAME, CLIENT_DATEOFBIRTH, SEX,CLIENT_BIO);
-		Court court = new TennisCourt(0, COURT_NAME, SURFACE, COURT_NUM_PLAYERS, COURT_COST, true);
-		Reservation res = new Reservation(0, LocalDateTime.now(), LocalDateTime.now(), coach, court, COURT_COST);
-		
-		testEntityManager.persist(coach);
-		testEntityManager.persist(court);
-		testEntityManager.persist(res);
-		
-		TrainingCamp t1 = new TrainingCamp(0, START_1, END_1, coach, COURT_COST, TipoSport.TENNIS);
-		TrainingCamp t2 = new TrainingCamp(0, START_2, END_2, coach, COURT_COST, TipoSport.TENNIS);
-		TrainingCamp t3 = new TrainingCamp(0, START_3, END_3, coach, COURT_COST, TipoSport.TENNIS);		
-		TrainingCamp t4 = new TrainingCamp(0, START_2, END_2, coach, COURT_COST, TipoSport.CALCIO);
-
-		testEntityManager.persist(t1);
-		testEntityManager.persist(t2);
-		testEntityManager.persist(t3);
-		testEntityManager.persist(t4);
-		testEntityManager.flush();
-		
 		JPATrainingCampDAO campDao = new JPATrainingCampDAO();
 		campDao.manager = testEntityManager;
 		
@@ -109,6 +107,24 @@ public class JPATrainingCampDAOTest {
 		
 		assertEquals(2, target.size());
 		
+	}
+	
+	@Test
+	public void testClientEnrollment() {
+		
+		Client client = new Client(0, CLIENT_FIRSTNAME, CLIENT_LASTNAME, CLIENT_DATEOFBIRTH, SEX);
+
+		testEntityManager.persist(client);
+		
+		JPATrainingCampDAO campDao = new JPATrainingCampDAO();
+		campDao.manager = testEntityManager;
+		
+		TrainingCamp tCamp = campDao.findById(t1.getId());
+		assertEquals(0, tCamp.getClients().size());
+		
+		tCamp.enroll(client);
+		tCamp = campDao.findById(t1.getId());
+		assertEquals(1, tCamp.getClients().size());
 		
 	}
 
