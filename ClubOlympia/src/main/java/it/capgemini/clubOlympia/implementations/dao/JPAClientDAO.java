@@ -10,7 +10,7 @@ import it.capgemini.clubOlympia.entities.Client;
 import it.capgemini.clubOlympia.entities.TrainingCamp;
 
 @Repository
-public class JPAClientDAO implements ClientDAO {
+public class JPAClientDAO extends JPACrudDAO<Client> implements ClientDAO {
 
 	public static final String ALL_CLIENTS = "select c from Client as c ";
 	
@@ -20,28 +20,29 @@ public class JPAClientDAO implements ClientDAO {
 	@Autowired
 	protected EntityManager manager;
 
-	@Override 
-	public Client findById(int id) {
-		Client found = manager.find(Client.class, id);
-		return found;
-
-	}
-
-	@Override
-	public Client save(Client client) {
-		manager.persist(client);
-		return client;
-	}
+//	@Override 
+//	public Client findById(int id, Client.class) {
+//		Client found = manager.find(Client.class, id);
+//		return found;
+//
+//	}
+//	@Override
+//	public Iterable<Client> all() {
+//		return manager.createQuery(ALL_CLIENTS, Client.class).getResultList();
+//	}
+//
+//
+//	@Override
+//	public Client add(Client client) {
+//		manager.persist(client);
+//		return client;
+//	}
 
 	@Override
 	public Iterable<Client> findByTrainingCamp(int campId) {
 		return manager.find(TrainingCamp.class, campId).getClients();
 	}
 
-	@Override
-	public Iterable<Client> all() {
-		return manager.createQuery(ALL_CLIENTS, Client.class).getResultList();
-	}
 
 	@Override
 	public Iterable<Client> findByNotInTrainingCamp(int campId) {

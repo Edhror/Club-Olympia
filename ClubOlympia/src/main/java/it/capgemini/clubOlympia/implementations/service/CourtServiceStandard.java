@@ -17,7 +17,7 @@ public class CourtServiceStandard implements CourtService{
 	@Override
 	@Transactional
 	public Court findById(int id) {
-		return courtDao.findById(id);
+		return courtDao.findById(id, Court.class);
 		
 	}
 	

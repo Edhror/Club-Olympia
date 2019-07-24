@@ -1,15 +1,17 @@
 package it.capgemini.clubOlympia.abstraction.service;
 
+import java.time.LocalDateTime;
+
 import it.capgemini.clubOlympia.entities.Reservation;
 
 public interface ReservationService {
 	Iterable<Reservation> list();
 
 	void save(Reservation reservation);
-
-	void update(Reservation reservation);
 	
 	Reservation byId(int id);
 
 	void delete(int id);
+	
+	Iterable<Reservation> findByTimeRanged(LocalDateTime startTime, LocalDateTime endTime);
 }

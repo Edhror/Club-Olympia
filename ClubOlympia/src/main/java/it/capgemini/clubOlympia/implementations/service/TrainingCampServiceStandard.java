@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.capgemini.clubOlympia.abstraction.dao.ClientDAO;
+import it.capgemini.clubOlympia.abstraction.dao.CrudDAO;
 import it.capgemini.clubOlympia.abstraction.dao.TrainingCampDAO;
 import it.capgemini.clubOlympia.abstraction.service.TrainingCampService;
 import it.capgemini.clubOlympia.entities.Client;
@@ -21,10 +22,13 @@ public class TrainingCampServiceStandard implements TrainingCampService {
 	@Autowired
 	ClientDAO clientDao;
 	
+	@Autowired
+	CrudDAO<TrainingCamp> crudDao;
+	
 	@Override
 	@Transactional
 	public Iterable<TrainingCamp> allTrainingCamp() {
-		return trainingCampDao.allTrainingCamp();
+		return crudDao.all(TrainingCamp.class);
 	}
 
 	@Override
@@ -42,13 +46,13 @@ public class TrainingCampServiceStandard implements TrainingCampService {
 	@Override
 	@Transactional
 	public TrainingCamp delete(int idTrainingCourt) {
-		return trainingCampDao.delete(idTrainingCourt);
+		return trainingCampDao.delete(idTrainingCourt, TrainingCamp.class);
 	}
 
 	@Override
 	@Transactional
 	public TrainingCamp findById(int id) {
-		return trainingCampDao.findById(id);
+		return trainingCampDao.findById(id, TrainingCamp.class);
 	}
 
 	@Override
@@ -61,7 +65,7 @@ public class TrainingCampServiceStandard implements TrainingCampService {
 	@Override
 	@Transactional
 	public void changeEnrollment(int trainingCampId, int clientId, boolean enroll) {
-		Client client = clientDao.findById(clientId);
+		Client client = clientDao.findById(clientId, Client.class);
 		trainingCampDao.changeEnrollment(trainingCampId, client, enroll);
 	}
 

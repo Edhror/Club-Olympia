@@ -9,22 +9,22 @@ import it.capgemini.clubOlympia.abstraction.dao.CourtDAO;
 import it.capgemini.clubOlympia.entities.Court;
 
 @Repository
-public class JPACourtDAO implements CourtDAO {
+public class JPACourtDAO extends JPACrudDAO<Court> implements CourtDAO {
 
 	@Autowired
 	protected EntityManager manager;
 	
-	@Override
-	public Court findById(int id) {
-		Court found = manager.find(Court.class, id);
-		return found;
-
-	}
-
-	@Override
-	public Court save(Court court) {
-		manager.persist(court);
-		return court;
-	}
+//	@Override
+//	public Court findById(int id) {
+//		Court found = manager.find(Court.class, id);
+//		return found;
+//
+//	}
+//
+//	@Override
+//	public Court add(Court court) {
+//		manager.persist(court);
+//		return court;
+//	}
 
 }

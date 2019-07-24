@@ -17,7 +17,7 @@ public class ClientServiceStandard implements ClientService{
 	@Override
 	@Transactional
 	public Client findById(int id) {
-		return clientDao.findById(id);
+		return clientDao.findById(id, Client.class);
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class ClientServiceStandard implements ClientService{
 	@Override
 	@Transactional
 	public Iterable<Client> all() {
-		return clientDao.all();
+		return clientDao.all(Client.class);
 	}
 
 	@Override

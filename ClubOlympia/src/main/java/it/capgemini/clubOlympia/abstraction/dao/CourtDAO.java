@@ -2,7 +2,7 @@ package it.capgemini.clubOlympia.abstraction.dao;
 
 import it.capgemini.clubOlympia.entities.Court;
 
-public interface CourtDAO {
-     Court findById(int id);
-     Court save(Court court);
+public interface CourtDAO extends CrudDAO<Court>{
+//     Court findById(int id);
+//     Court add(Court court);
 }

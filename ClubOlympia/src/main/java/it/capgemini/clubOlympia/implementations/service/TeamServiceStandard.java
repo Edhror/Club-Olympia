@@ -20,13 +20,13 @@ public class TeamServiceStandard implements TeamService{
 	@Override
 	@Transactional
 	public Team byId(int id) {
-		return teamDao.findById(id);
+		return teamDao.findById(id, Team.class);
 	}
 
 	@Override
 	@Transactional
 	public Iterable<Team> list() {
-		return teamDao.allTeams();
+		return teamDao.all(Team.class);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class TeamServiceStandard implements TeamService{
 	@Override
 	@Transactional
 	public void delete(int id) {
-		teamDao.delete(id);
+		teamDao.delete(id, Team.class);
 	}
 
 }

@@ -119,11 +119,11 @@ public class JPATrainingCampDAOTest {
 		JPATrainingCampDAO campDao = new JPATrainingCampDAO();
 		campDao.manager = testEntityManager;
 		
-		TrainingCamp tCamp = campDao.findById(t1.getId());
+		TrainingCamp tCamp = campDao.findById(t1.getId(), TrainingCamp.class);
 		assertEquals(0, tCamp.getClients().size());
 		
 		tCamp.enroll(client);
-		tCamp = campDao.findById(t1.getId());
+		tCamp = campDao.findById(t1.getId(), TrainingCamp.class);
 		assertEquals(1, tCamp.getClients().size());
 		
 	}

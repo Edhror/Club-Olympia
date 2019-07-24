@@ -1,5 +1,6 @@
 package it.capgemini.clubOlympia.controllers;
 
+import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -46,9 +48,17 @@ public class ReservationController {
 	private CourtService courtService;
 
 	@GetMapping("/reservations")
-	public Iterable<ReservationDTO> all() {
+	public Iterable<ReservationDTO> all(@RequestParam(defaultValue = "") String start, 
+			@RequestParam(defaultValue = "") String end) {
 		logger.info("calling all reservation method");
-		Iterable<Reservation> all = reservationService.list();
+		Iterable<Reservation> all; 
+		if(!start.isBlank() && !end.isBlank()) {
+			LocalDateTime startTime = LocalDateTime.parse(start);
+			LocalDateTime endTime = LocalDateTime.parse(end);
+			all = reservationService.findByTimeRanged(startTime, endTime);
+		}else {
+			all=reservationService.list();
+		}
 		Stream<Reservation> streamRes = StreamSupport.stream(all.spliterator(), false);
 		return streamRes.map(r -> ReservationDTO.reservationToDTO(r)).collect(Collectors.toList());
 	}
@@ -111,7 +121,7 @@ public class ReservationController {
 		res.setClient(client);
 		res.setCourt(court);
 		
-		reservationService.update(res);
+		reservationService.save(res);
 		ReservationInputDTO result = ReservationInputDTO.reservationToDTO(res);
 		return new ResponseEntity<ReservationInputDTO>(result, HttpStatus.ACCEPTED);
 	}
