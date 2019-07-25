@@ -9,18 +9,36 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 
 @Entity
+@NamedQuery(
+		name="Reservation.findByTimeRange",
+		query="select r from Reservation r where startTime < :endRange and endTime > :startRange"
+		)
+
+@NamedNativeQuery(
+		name="Reservation.findByTimeRangeForTennis",
+		resultClass = Reservation.class,
+		query="select r.id, r.start_date, r.end_date, r.cost, r.client_id, r.court_id, r.training_camp_id from reservation r inner join tennis_court t on r.court_id = t.id where start_date < ? and end_date > ?"
+		)
+
+@NamedNativeQuery(
+		name="Reservation.findByTimeRangeForSoccer",
+		resultClass = Reservation.class,
+		query="select r.id, r.start_date, r.end_date, r.cost, r.client_id, r.court_id, r.training_camp_id from reservation r inner join soccer_court s on r.court_id = s.id where start_date < ? and end_date > ?"
+		)
 public class Reservation {
 	@Id
 	@SequenceGenerator(name="reservationSeq",sequenceName="public.reservation_id_sequence", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="reservationSeq")
 	private int id;
 	@Column(name="start_date")
-	private LocalDateTime start;
+	private LocalDateTime startTime;
 	@Column(name="end_date")
-	private LocalDateTime end;
+	private LocalDateTime endTime;
     private double cost;
     @ManyToOne
     @JoinColumn(name="client_id")
@@ -30,15 +48,15 @@ public class Reservation {
     private Court court;
     
     @ManyToOne
-    @JoinColumn(name="traningCamp_id", nullable = true)
+    @JoinColumn(name="training_camp_id", nullable = true)
     private TrainingCamp trainingCamp;
     
 
 
 	public Reservation(int id, LocalDateTime start, LocalDateTime end, Client client, Court court, double cost) {
 		this.id = id;
-		this.start = start;
-		this.end = end;
+		this.startTime = start;
+		this.endTime = end;
 		this.client = client;
 		this.court = court;
 		this.cost = cost;
@@ -66,7 +84,7 @@ public class Reservation {
 	}
 
 	public boolean overlapsWith(Reservation other) {
-		return start.isBefore(other.getEnd()) && end.isAfter(other.getStart());
+		return startTime.isBefore(other.getEndTime()) && endTime.isAfter(other.getStartTime());
 	}
 
 	public Court getCourt() {
@@ -78,20 +96,20 @@ public class Reservation {
 	}
 
 	
-	public LocalDateTime getStart() {
-		return start;
+	public LocalDateTime getStartTime() {
+		return startTime;
 	}
 
-	public void setStart(LocalDateTime start) {
-		this.start = start;
+	public void setStartTime(LocalDateTime start) {
+		this.startTime = start;
 	}
 
-	public LocalDateTime getEnd() {
-		return end;
+	public LocalDateTime getEndTime() {
+		return endTime;
 	}
 
-	public void setEnd(LocalDateTime end) {
-		this.end = end;
+	public void setEndTime(LocalDateTime end) {
+		this.endTime = end;
 	}
 
 	public int getId() {
@@ -126,7 +144,7 @@ public class Reservation {
 
 	@Override
 	public String toString() {
-		return "Reservation [id=" + id + ", start=" + start + ", end=" + end + ", client=" + client + ", court=" + court
+		return "Reservation [id=" + id + ", start=" + startTime + ", end=" + endTime + ", client=" + client + ", court=" + court
 				+ ", cost=" + cost + "]";
 	}
 

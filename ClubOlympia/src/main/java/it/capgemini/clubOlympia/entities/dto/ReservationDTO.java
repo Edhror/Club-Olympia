@@ -80,7 +80,7 @@ public class ReservationDTO {
 
 	public static ReservationDTO reservationToDTO(Reservation res) {
 
-		return new ReservationDTO(res.getId(), res.getStart(), res.getEnd(), res.getCost(),
+		return new ReservationDTO(res.getId(), res.getStartTime(), res.getEndTime(), res.getCost(),
 				res.getClient().getName() + " " + res.getClient().getLastname(), res.getCourt().getName());
 	}
 

@@ -55,7 +55,7 @@ public class ReservationController {
 		if(!start.isBlank() && !end.isBlank()) {
 			LocalDateTime startTime = LocalDateTime.parse(start);
 			LocalDateTime endTime = LocalDateTime.parse(end);
-			all = reservationService.findByTimeRanged(startTime, endTime);
+			all = reservationService.findByTimeRange(startTime, endTime);
 		}else {
 			all=reservationService.list();
 		}

@@ -13,5 +13,5 @@ public interface ReservationService {
 
 	void delete(int id);
 	
-	Iterable<Reservation> findByTimeRanged(LocalDateTime startTime, LocalDateTime endTime);
+	Iterable<Reservation> findByTimeRange(LocalDateTime startTime, LocalDateTime endTime);
 }

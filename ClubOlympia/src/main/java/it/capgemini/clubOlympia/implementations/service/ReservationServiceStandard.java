@@ -57,9 +57,13 @@ public class ReservationServiceStandard  implements ReservationService{
 
 	@Override
 	@Transactional
-	public Iterable<Reservation> findByTimeRanged(LocalDateTime startTime, LocalDateTime endTime) {
+	public Iterable<Reservation> findByTimeRange(LocalDateTime startRange, LocalDateTime endRange) {
 		//return reservationRepo.findByStartBetween(startTime, endTime);
-		return reservationRepo.findByStartBetweenOrEndBetween(startTime, endTime, startTime, endTime);
+		//return reservationRepo.findByStartBetweenOrEndBetween(startTime, endTime, startTime, endTime);
+//		return reservationRepo.findByTimeRange(startRange, endRange);
+//		return reservationRepo.findByCourtId(1);
+//		return reservationRepo.findByTimeRangeForTennis(startRange, endRange);
+		return reservationRepo.findByTimeRangeForSoccer(startRange, endRange);
 	}
 	
 }

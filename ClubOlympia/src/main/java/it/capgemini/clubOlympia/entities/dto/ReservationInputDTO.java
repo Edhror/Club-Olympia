@@ -78,7 +78,7 @@ public class ReservationInputDTO {
 
 	public static ReservationInputDTO reservationToDTO(Reservation res) {
 
-		return new ReservationInputDTO(res.getId(), res.getStart(), res.getEnd(), res.getCost(),
+		return new ReservationInputDTO(res.getId(), res.getStartTime(), res.getEndTime(), res.getCost(),
 				res.getClient().getId(), res.getCourt().getId());
 	}
 
