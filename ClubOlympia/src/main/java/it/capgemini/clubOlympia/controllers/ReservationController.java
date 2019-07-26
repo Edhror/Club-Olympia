@@ -1,6 +1,7 @@
 package it.capgemini.clubOlympia.controllers;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -75,26 +76,29 @@ public class ReservationController {
 	}
 
 	@PostMapping("/reservations")
-	public ResponseEntity<ReservationInputDTO> add(@RequestBody ReservationInputDTO dto,
+	public ResponseEntity<Iterable<String>> add(@RequestBody ReservationInputDTO dto,
 			UriComponentsBuilder uriComponentsBuilder) {
 		logger.info("calling add reservation method");
 		Reservation res = dto.toReservation();
 		Client client = clientService.findById(dto.getClientId());
 		if (client == null) {
-			return new ResponseEntity<ReservationInputDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Iterable<String>>(HttpStatus.NOT_FOUND);
 		}
 		Court court = courtService.findById(dto.getCourtId());
 		if (court == null) {
-			return new ResponseEntity<ReservationInputDTO>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Iterable<String>>(HttpStatus.NOT_FOUND);
 		}
 
 		res.setClient(client);
 		res.setCourt(court);
 
-		reservationService.save(res);
-		ReservationInputDTO result = ReservationInputDTO.reservationToDTO(res);
-		UriComponents uriComponents = uriComponentsBuilder.path("/reservations/{id}").buildAndExpand(result.getId());
-		return ResponseEntity.created(uriComponents.toUri()).body(result);
+		List<String> var = (List<String>) reservationService.save(res);
+		
+		return ResponseEntity.ok(var);
+		
+//		ReservationInputDTO result = ReservationInputDTO.reservationToDTO(res);
+//		UriComponents uriComponents = uriComponentsBuilder.path("/reservations/{id}").buildAndExpand(result.getId());
+//		return ResponseEntity.created(uriComponents.toUri()).body(var);
 		// return new ResponseEntity<ReservationInputDTO>(result, HttpStatus.CREATED);
 	}
 

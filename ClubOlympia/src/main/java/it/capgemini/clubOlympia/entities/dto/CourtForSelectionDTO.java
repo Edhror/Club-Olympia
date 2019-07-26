@@ -5,11 +5,11 @@ import it.capgemini.clubOlympia.entities.Court;
 public class CourtForSelectionDTO {
 
 	private int id;
-	private String courtName;
+	private String name;
 
-	public CourtForSelectionDTO(int id, String courtName) {
+	public CourtForSelectionDTO(int id, String name) {
 		this.id = id;
-		this.courtName = courtName;
+		this.name = name;
 	}
 	
 	public CourtForSelectionDTO() {
@@ -24,12 +24,12 @@ public class CourtForSelectionDTO {
 		this.id = id;
 	}
 
-	public String getCourtName() {
-		return courtName;
+	public String getName() {
+		return name;
 	}
 
-	public void setCourtName(String courtName) {
-		this.courtName = courtName;
+	public void setName(String courtName) {
+		this.name = courtName;
 	}
 
 

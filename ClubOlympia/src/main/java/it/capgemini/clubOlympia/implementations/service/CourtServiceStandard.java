@@ -20,6 +20,14 @@ public class CourtServiceStandard implements CourtService{
 		return courtDao.findById(id, Court.class);
 		
 	}
+
+	@Override
+	@Transactional
+	public Iterable<Court> all() {
+		return courtDao.all(Court.class);
+	}
+	
+	
 	
 	
 	

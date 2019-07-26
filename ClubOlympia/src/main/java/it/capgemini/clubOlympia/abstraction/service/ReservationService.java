@@ -7,7 +7,7 @@ import it.capgemini.clubOlympia.entities.Reservation;
 public interface ReservationService {
 	Iterable<Reservation> list();
 
-	void save(Reservation reservation);
+	Iterable<String> save(Reservation reservation);
 	
 	Reservation byId(int id);
 

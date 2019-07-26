@@ -4,4 +4,5 @@ import it.capgemini.clubOlympia.entities.Court;
 
 public interface CourtService {
     Court findById(int id);
+    Iterable<Court> all();
 }
